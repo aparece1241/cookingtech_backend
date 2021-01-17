@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Recipe extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "name","description","ingredients","procedure","tag","category","yield","video","img"
+    ];
+
+    protected $casts=[
+        "ingredients"=>"array",
+        "procedure"=>"array",
+        "img"=>"array"
+    ];
+
 }
