@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Validator;
 
 class RecipeController extends Controller
 {
@@ -120,5 +121,17 @@ class RecipeController extends Controller
         return response()->json($recipe);
 
 
+    }
+//testing 
+    function testData(Request $request){
+        $rules=array(
+            "name"=>"required"
+
+        );
+
+        $validator= Validator::make($request->all(),$rules);
+        if($validator->fails()){
+            return $validator->errors();
+        }
     }
 }

@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::apiResource('/recipes', RecipeController::class);
-
+Route::post('/test',[RecipeController::class,"testData"]);
 
 //index => localhost:port/recipes
 //store => localhost:port/recipes
