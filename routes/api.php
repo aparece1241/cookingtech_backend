@@ -33,6 +33,8 @@ Route::post('login', [UserController::class, 'index']);
 
 Route::apiResource('/recipes', RecipeController::class);
 Route::post('/test',[RecipeController::class,"testData"]);
+Route::get('/search/{id}',[RecipeController::class,"searchById"]);
+Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
 
 //index => localhost:port/recipes
 //store => localhost:port/recipes
