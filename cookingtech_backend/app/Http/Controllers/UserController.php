@@ -98,4 +98,13 @@ class UserController extends Controller
     {
         //
     }
+
+    /**
+     * Get all the user
+     */
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
 }

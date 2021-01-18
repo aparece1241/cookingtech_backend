@@ -18,7 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [UserController::class, 'index']);
+Route::group(['middleware'=>'auth:sanctum'], function() {
+    Route::get('/users', [UserController::class, 'getAllUsers']);
+});
+Route::post('login', [UserController::class, 'index']);
+
 
 //laravel middleware
 //https://www.youtube.com/watch?v=1MPcjWmrnng
