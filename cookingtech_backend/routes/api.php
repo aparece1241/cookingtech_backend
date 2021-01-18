@@ -19,9 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::apiResource('/recipes', RecipeController::class);
 Route::post('/test',[RecipeController::class,"testData"]);
+Route::get('/search/{id}',[RecipeController::class,"searchById"]);
+Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
 
 //index => localhost:port/recipes
 //store => localhost:port/recipes

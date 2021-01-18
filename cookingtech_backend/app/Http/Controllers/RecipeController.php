@@ -119,9 +119,19 @@ class RecipeController extends Controller
         $recipe->delete();
 
         return response()->json($recipe);
-
-
     }
+
+    public function searchById($id){
+        $recipe = Recipe::find($id);
+        return response()->json($recipe);
+    }
+
+    // public function searchbyTag($tag){
+    //     $data =$request->get('tag');
+
+    //     $recipe =Driver::where('tag','like',"%{$data}%")->get();
+    //     return response()->json(['data' => $recipe]);
+    // }
 //testing 
     function testData(Request $request){
         $rules=array(
@@ -134,4 +144,6 @@ class RecipeController extends Controller
             return $validator->errors();
         }
     }
+
+   
 }
