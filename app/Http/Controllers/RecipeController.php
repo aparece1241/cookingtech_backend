@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Validator;
 
 class RecipeController extends Controller
 {
@@ -14,7 +15,11 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        //retrive all recipes
+
+        $recipe = Recipe::all();
+        return response()->json($recipe);
+
     }
 
     /**
@@ -25,6 +30,8 @@ class RecipeController extends Controller
     public function create()
     {
         //
+
+
     }
 
     /**
@@ -36,6 +43,19 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         //
+        $recipe = new Recipe();
+        $recipe->name = $request->name;
+        $recipe->description =$request->description;
+        $recipe->tag=$request->tag;
+        $recipe->category= $request->category;
+        $recipe->yield= $request->yield;
+        $recipe->video= $request->video;
+        $recipe->img= $request->img;
+        $recipe->ingredients =$request->ingredients;
+        $recipe->procedure= $request->procedure;
+        $recipe->save();
+
+        return response()->json($recipe);
     }
 
     /**
@@ -67,9 +87,23 @@ class RecipeController extends Controller
      * @param  \App\Models\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Recipe $recipe)
+    public function update(Request $request,$id)
     {
         //
+        $recipe = Recipe::find($id);
+        $recipe->name = $request->name;
+        $recipe->description =$request->description;
+        $recipe->tag=$request->tag;
+        $recipe->category= $request->category;
+        $recipe->yield= $request->yield;
+        $recipe->video= $request->video;
+        $recipe->img= $request->img;
+        $recipe->ingredients =$request->ingredients;
+        $recipe->procedure= $request->procedure;
+        $recipe->save();
+
+        return response()->json($recipe);
+
     }
 
     /**
@@ -78,8 +112,26 @@ class RecipeController extends Controller
      * @param  \App\Models\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Recipe $recipe)
+    public function destroy($id)
     {
         //
+        $recipe = Recipe::find($id);
+        $recipe->delete();
+
+        return response()->json($recipe);
+
+
+    }
+//testing 
+    function testData(Request $request){
+        $rules=array(
+            "name"=>"required"
+
+        );
+
+        $validator= Validator::make($request->all(),$rules);
+        if($validator->fails()){
+            return $validator->errors();
+        }
     }
 }
