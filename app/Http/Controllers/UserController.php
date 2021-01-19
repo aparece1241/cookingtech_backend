@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Client\ResponseSequence;
 
 class UserController extends Controller
 {
@@ -47,31 +48,44 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * The store function will act as the register user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        
+        //validation here
+        $validation = Validator::make($request->all(), [
+            'username' => 'required|unique|max:255',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'password' => 'required',
+            'email' => 'required|email',
+        ]);
+        $response = [];
 
-        DB::beginTransaction();
-        try {
-            
-        }catch(\Exception $e) {
-
+        //check the validation if there are errors
+        if($validation->fails())
+        {   
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        }else {
+            DB::beginTransaction();
+            try {
+                //save
+                $user = User::create($request->all());
+                DB::commit();
+                $response["last_inserted_id"] = $user->id;
+                $response["code"] = 200;
+            }catch(\Exception $e) {
+                DB::rollBack();
+                $response["errors"] = ["The user was not created!"];    
+                $response["code"] = 400;
+            }
         }
+        
+        return response($response, $response["code"]);
     }
 
     /**
