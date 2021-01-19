@@ -79,7 +79,9 @@ class UserController extends Controller
             DB::beginTransaction();
             try {
                 //save
-                $user = User::create($request->all());
+                $data = $request->all();
+                $data["password"] = Hash::make($data["password"]);
+                $user = User::create($data);
 
                 $response["last_inserted_id"] = $user->id;
                 $response["code"] = 200;
@@ -143,7 +145,6 @@ class UserController extends Controller
             $response["code"] = 400;
         } else {
             DB::beginTransaction();
-            // return $request->all();
             try {
                 //update
                 $user = User::where('id', $id)
@@ -208,5 +209,29 @@ class UserController extends Controller
 
         return response($response, $response["code"]);
     }
+
+
+    /**
+     * Get user and and the recipes he/she created
+     * 
+     * @param int $id
+     * 
+     * @return Illuminate\Http\Request
+     */
+
+     public function getUserByIdAnd($id)
+     {
+        $response=[];
+        try {
+            $user = User::findOrFail($id)->latest()->with('recipes')->get();
+            $response["user"] = $user;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["error"] = ["message"=>"Can't retrieve users $e"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+     }
 
 }

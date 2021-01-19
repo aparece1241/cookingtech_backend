@@ -29,11 +29,13 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
 Route::post('login', [UserController::class, 'login']);
 Route::apiResource('/recipes', RecipeController::class);
 Route::apiResource('/users', UserController::class);
+Route::get('users/recipe/{id}', [UserController::class, 'getUserByIdAnd']);
 
 
 
 Route::post('/test',[RecipeController::class,"testData"]);
 Route::get('/search/{id}',[RecipeController::class,"searchById"]);
-Route::get('/search/{category}/cat',[RecipeController::class,"searchbyCategory"]);
 Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
+
+
 
