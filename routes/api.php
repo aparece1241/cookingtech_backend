@@ -34,5 +34,6 @@ Route::apiResource('/users', UserController::class);
 
 Route::post('/test',[RecipeController::class,"testData"]);
 Route::get('/search/{id}',[RecipeController::class,"searchById"]);
+Route::get('/search/{category}/cat',[RecipeController::class,"searchbyCategory"]);
 Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
 

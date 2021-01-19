@@ -19,14 +19,14 @@ class Recipe extends Model
         "tag",
         "category",
         "yield",
-        "video",
-        "img",
+        "video_url",
+        "img_url",
         "user_id"
     ];
 
     protected $casts=[
         "ingredients"=>"array",
-        "procedure"=>"array",
+        "procedures"=>"array",
         "img"=>"array",
         "tag"=>"array"
     ];
