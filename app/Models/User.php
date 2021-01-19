@@ -6,10 +6,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Recipe;
+use App\Models\Library;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'firstname',
+        'lastname'
     ];
 
     /**
@@ -40,4 +45,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    //relationship user hasMany recipe
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class);
+    }
+
+    
+    //relationship: user has one library
+    public function library(Type $var = null)
+    {
+        return $this->hasOne(Library::class);
+    }
 }

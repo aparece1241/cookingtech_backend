@@ -1,0 +1,24 @@
+###
+POST  https://cookingtech.herokuapp.com/api/login
+Content-Type: application/json
+
+{
+    "email": "aparece@gmail.com",
+    "password": "password"
+}
+###
+
+POST https://cookingtech.herokuapp.com/api/recipes
+Content-Type: application/json
+
+{
+    "name": "Adobo",
+    "description": "lami",
+    "ingredients": "['test','test','test']",
+    "procedure": "['test','test']",
+    "tag": "yummy",
+    "category": "desert",
+    "yield": 5,
+    "video": "fasfasfasfas",
+    "img": "afasfasfsafasfasf"
+}
