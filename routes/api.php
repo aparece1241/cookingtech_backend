@@ -22,42 +22,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::group(['middleware'=>'auth:sanctum'], function() {
+
 });
 
 Route::post('login', [UserController::class, 'login']);
-
-
-
-
 Route::apiResource('/recipes', RecipeController::class);
-
 Route::apiResource('/users', UserController::class);
+
+
+
+
 
 Route::post('/test',[RecipeController::class,"testData"]);
 Route::get('/search/{id}',[RecipeController::class,"searchById"]);
 Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
-
-//index => localhost:port/recipes
-//store => localhost:port/recipes
-//destroy => localhost:port/recipes/{id}
-//update => localhost:port/recipes/{id}
-
-
-/**
- * DB::beginTransaction();
-
-try {
-    DB::insert(...);
-    DB::insert(...);
-    DB::insert(...);
-
-    DB::commit();
-    // all good
-} catch (\Exception $e) {
-    DB::rollback();
-    // something went wrong
-}
- */
 

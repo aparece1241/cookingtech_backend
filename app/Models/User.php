@@ -24,7 +24,9 @@ class User extends Authenticatable
         'email',
         'password',
         'firstname',
-        'lastname'
+        'lastname',
+        'username',
+        'usertype'
     ];
 
     /**
@@ -53,7 +55,7 @@ class User extends Authenticatable
         return $this->hasMany(Recipe::class);
     }
 
-    
+
     //relationship: user has one library
     public function library(Type $var = null)
     {
