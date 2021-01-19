@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Client\ResponseSequence;
+use Validator;
 
 class UserController extends Controller
 {
@@ -57,11 +58,12 @@ class UserController extends Controller
     {
         //validation here
         $validation = Validator::make($request->all(), [
-            'username' => 'required|unique|max:255',
+            'username' => 'required|unique:users|max:255',
             'firstname' => 'required',
             'lastname' => 'required',
             'password' => 'required',
             'email' => 'required|email',
+            'usertype'=>'required',
         ]);
         $response = [];
 
@@ -80,7 +82,7 @@ class UserController extends Controller
                 $response["code"] = 200;
             }catch(\Exception $e) {
                 DB::rollBack();
-                $response["errors"] = ["The user was not created!"];    
+                $response["errors"] = ["The user was not created!.$e"];    
                 $response["code"] = 400;
             }
         }
