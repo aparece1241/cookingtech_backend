@@ -16,7 +16,8 @@ class Recipe extends Model
     protected $casts=[
         "ingredients"=>"array",
         "procedure"=>"array",
-        "img"=>"array"
+        "img"=>"array",
+        "tag"=>"array"
     ];
 
 }

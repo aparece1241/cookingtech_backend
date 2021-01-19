@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class RecipeController extends Controller
@@ -89,9 +90,9 @@ class RecipeController extends Controller
      */
     public function update(Request $request,$id)
     {
-        //
+       
         $recipe = Recipe::find($id);
-        $recipe->name = $request->name;
+        $recipe->name=$request->name;
         $recipe->description =$request->description;
         $recipe->tag=$request->tag;
         $recipe->category= $request->category;
@@ -101,7 +102,7 @@ class RecipeController extends Controller
         $recipe->ingredients =$request->ingredients;
         $recipe->procedure= $request->procedure;
         $recipe->save();
-
+        
         return response()->json($recipe);
 
     }
@@ -126,10 +127,11 @@ class RecipeController extends Controller
         return response()->json($recipe);
     }
 
-    // public function searchbyTag($tag){
-    //     $data =$request->get('tag');
+    // public function searchbyTag(Request $request){
+    //     $data = $request->get('data');
 
-    //     $recipe =Driver::where('tag','like',"%{$data}%")->get();
+    //     $recipe =Recipe::where('description','like',"%{$data}%")
+    //                     ->get();
     //     return response()->json(['data' => $recipe]);
     // }
 //testing 

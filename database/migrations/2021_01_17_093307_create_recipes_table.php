@@ -17,7 +17,7 @@ class CreateRecipesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('tag');
+            $table->json('tag');
             $table->string('category');
             $table->integer('yield');
             $table->string('video');
@@ -25,6 +25,8 @@ class CreateRecipesTable extends Migration
             $table->json('ingredients');
             $table->json('procedure');
             $table->timestamps();
+
+        
         });
     }
 
@@ -33,6 +35,7 @@ class CreateRecipesTable extends Migration
      *
      * @return void
      */
+
     public function down()
     {
         Schema::dropIfExists('recipes');
