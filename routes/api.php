@@ -41,3 +41,20 @@ Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
 //destroy => localhost:port/recipes/{id}
 //update => localhost:port/recipes/{id}
 
+
+/**
+ * DB::beginTransaction();
+
+try {
+    DB::insert(...);
+    DB::insert(...);
+    DB::insert(...);
+
+    DB::commit();
+    // all good
+} catch (\Exception $e) {
+    DB::rollback();
+    // something went wrong
+}
+ */
+
