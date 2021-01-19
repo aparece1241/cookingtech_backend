@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -13,7 +14,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+
+     public function index()
+     {
+         try {
+            $users = User::all();
+            return response()->json($users);
+         }catch (\Exception $e) {
+            return response()->json($e);
+         }
+     }
+
+
+    public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
         // return response()->json(Hash::check($request->password, $user->password));
@@ -51,7 +64,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+
+        DB::beginTransaction();
+        try {
+            
+        }catch(\Exception $e) {
+
+        }
     }
 
     /**
