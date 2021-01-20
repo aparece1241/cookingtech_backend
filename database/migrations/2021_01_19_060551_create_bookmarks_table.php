@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLibrariesTable extends Migration
+class CreateBookmarksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateLibrariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('libraries', function (Blueprint $table) {
+        Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
-            $table->json('recipes');
+            $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             //foreign key
+            $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -31,7 +32,7 @@ class CreateLibrariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('libraries', function(Blueprint $table) {
+        Schema::dropIfExists('bookmarks', function(Blueprint $table) {
             $table->dropForeign('user_id');
         });
     }

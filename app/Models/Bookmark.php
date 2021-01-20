@@ -4,29 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Reply;
+use App\Models\User;
 use App\Models\Recipe;
 
-class Comment extends Model
+class Bookmark extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
-        'content', 
-        'user_id', 
+        'user_id',
         'recipe_id'
     ];
 
+    //inverse relationship: a bookmark belongs to a user
 
-    //relationship: a comment can have many replies
-    public function replies()
+    public function user()
     {
-        return $this->hasMany(Reply::class);
+        return $this->belongsTo(User::class);
     }
 
+    //relationship: bookmark has recipe
 
-    //inverse relationship: a comment belongs to a recipe
     public function recipe()
     {
         return $this->belongsTo(Recipe::class);

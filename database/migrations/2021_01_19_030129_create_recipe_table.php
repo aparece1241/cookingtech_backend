@@ -17,11 +17,11 @@ class CreateRecipeTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->json('ingrdients');
+            $table->json('ingredients');
             $table->json('procedures');
             $table->json('tag');
             $table->enum('category',['desert','soup','breakfast']);
-            $table->integer('yeild');
+            $table->integer('yield');
             $table->string('video_url');
             $table->string('img_url');
             $table->unsignedBigInteger('user_id');

@@ -52,6 +52,30 @@ class UserController extends Controller
         return response($response, 201);
     }
 
+
+    /**
+     * Log out the current authenticated user
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $response=[];
+        try{
+            $request->user()->currentAccessToken()->delete();
+                $response["message"] = "Successfully logout!";
+                $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["message"] = "Something went wrong!";
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+    }
+
+
     /**
      * The store function will act as the register user.
      *
@@ -79,7 +103,9 @@ class UserController extends Controller
             DB::beginTransaction();
             try {
                 //save
-                $user = User::create($request->all());
+                $data = $request->all();
+                $data["password"] = Hash::make($data["password"]);
+                $user = User::create($data);
 
                 $response["last_inserted_id"] = $user->id;
                 $response["code"] = 200;
@@ -103,7 +129,7 @@ class UserController extends Controller
     {
         $response =[];
         try {
-            $user = User::find($id);
+            $user = User::findOrFail($id);
             $response["code"] = 200;
             $response["user"] = $user;
 
@@ -143,7 +169,6 @@ class UserController extends Controller
             $response["code"] = 400;
         } else {
             DB::beginTransaction();
-            // return $request->all();
             try {
                 //update
                 $user = User::where('id', $id)
@@ -198,7 +223,7 @@ class UserController extends Controller
     {
         $response=[];
         try {
-            $users = User::where('usertype', $userType);
+            $users = User::where('usertype', $userType)->get();
             $response["code"] = 200;
             $response["users"] = $users;
         }catch(\Exception $e){
@@ -209,4 +234,49 @@ class UserController extends Controller
         return response($response, $response["code"]);
     }
 
+    /**
+     * Get user and its bookmarked recipe
+     * 
+     * @param int id
+     * 
+     * @return Illuminate\Http\Response
+     */
+
+     public function getBookmarks($id)
+     {
+            $response=[];
+            try{
+                $userBookmarks = User::where("id", $id)->latest()->with('bookmarks','bookmarks.user','bookmarks.recipe')->get();
+                $response["user_bookmarks"] = $userBookmarks;
+                $response["code"] = 200;
+            }catch(\Exception $e){
+                $response["errors"] =["message"=> "Unable to retrieve user bookmarks"];
+                $response["code"] = 400;
+            }
+            return response($response, $response["code"]);
+    }
+
+    /**
+     * Get user and and the recipes he/she created
+     * 
+     * @param int $id
+     * 
+     * @return Illuminate\Http\Request
+     */
+
+     public function getUserByIdAnd($id)
+     {
+        $response=[];
+        try {
+            $user = User::where('id', $id)->with('recipes','recipes.comments')->get();
+            $response["user"] = $user;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["error"] = ["message"=>"Can't retrieve users $e"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+     }
+     
 }

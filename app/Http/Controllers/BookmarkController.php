@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Library;
+use App\Models\Bookmark;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
-class LibraryController extends Controller
+class BookmarkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,17 +16,16 @@ class LibraryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $response=[];
+        try {
+            $bookmarks = Bookmark::with('recipe','user')->get();
+            $response["bookmarks"] = $bookmarks;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["errors"] = ["message"=>"Unable to get the bookmarks! $e"];
+            $response["code"] = 400;
+        }
+        return response($response, $response["code"]);
     }
 
     /**
@@ -35,7 +36,32 @@ class LibraryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validation here
+        $validation = Validator::make($request->all(),[
+            'user_id' => "required",
+            'recipe_id' =>'required'
+        ]);
+
+        $response =[];
+        if($validation->fails()){
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        }else {
+            DB::beginTransaction();
+            try{
+                $bookmark = Bookmark::create($request->all());
+                DB::commit();
+                $response["last_inserted_id"] = $bookmark->id;
+                $response["code"] = 200;
+            }catch(\Exception $e) {
+                DB::rollBack();
+                $response["errors"] = ["message"=>"Cannot add bookmark! $e"];
+                $response["code"] = 400;
+            }
+
+            return response($response, $response["code"]);
+        }
+
     }
 
     /**

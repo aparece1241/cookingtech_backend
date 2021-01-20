@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Recipe;
-use App\Models\Library;
+use App\Models\Bookmark;
 
 class User extends Authenticatable
 {
@@ -20,7 +20,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'firstname',
@@ -57,8 +56,8 @@ class User extends Authenticatable
 
 
     //relationship: user has one library
-    public function library(Type $var = null)
+    public function bookmarks(Type $var = null)
     {
-        return $this->hasOne(Library::class);
+        return $this->hasMany(Bookmark::class);
     }
 }

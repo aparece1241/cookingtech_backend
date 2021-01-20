@@ -16,9 +16,14 @@ Content-Type: application/json
     "description": "lami",
     "ingredients": "['test','test','test']",
     "procedure": "['test','test']",
-    "tag": "yummy",
+    "tag": "[yummy]",
     "category": "desert",
-    "yield": 5,
-    "video": "fasfasfasfas",
-    "img": "afasfasfsafasfasf"
+    "yeild": 5,
+    "video_url": "fasfasfasfas",
+    "img_url": "afasfasfsafasfasf"
 }
+
+####
+
+GET https://cookingtech.herokuapp.com/api/recipes
+
