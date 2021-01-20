@@ -62,13 +62,17 @@ class UserController extends Controller
      */
     public function logout(Request $request)
     {
+        $response=[];
         try{
-            dd($request->user());
             $request->user()->currentAccessToken()->delete();
-            return response("Successfully logout!");
+                $response["message"] = "Successfully logout!";
+                $response["code"] = 200;
         }catch(\Exception $e) {
-            return response("Something went wrong!");
+            $response["message"] = "Womething went wrong!";
+            $response["code"] = 400;
         }
+
+        return response($response, $response["code"]);
     }
 
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comment;
 use App\Models\Rating;
+use App\Models\User;
 
 class Recipe extends Model
 {
@@ -44,4 +45,9 @@ class Recipe extends Model
         return $this->hasMany(Rating::class);
     } 
 
+    //inverse relationship: recipe belongs to the a user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

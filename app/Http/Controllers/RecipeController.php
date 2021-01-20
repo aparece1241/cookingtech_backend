@@ -77,7 +77,7 @@ class RecipeController extends Controller
                 $response["code"] = 200;
             }catch(\Exception $e) {
                 DB::rollback();
-                $response["errors"] = ["Recipe is not created".$e];
+                $response["errors"] = ["message"=>"Recipe is not created".$e];
                 $response["code"] = 400;
             }
         }
@@ -114,23 +114,6 @@ class RecipeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    // {
-
-    //     $recipe = Recipe::find($id);
-    //     $recipe->name = $request->name;
-    //     $recipe->description = $request->description;
-    //     $recipe->tag = $request->tag;
-    //     $recipe->category = $request->category;
-    //     $recipe->yield = $request->yield;
-    //     $recipe->video = $request->video;
-    //     $recipe->img = $request->img;
-    //     $recipe->ingredients = $request->ingredients;
-    //     $recipe->procedure = $request->procedure;
-    //     $recipe->save();
-
-    //     return response()->json($recipe);
-
-    // }
 {
     $validation = Validator::make($request->all(), [
         'name' => 'required|max:255',
@@ -162,7 +145,7 @@ class RecipeController extends Controller
             $response["code"] = 200;
         }catch(\Exception $e) {
             DB::rollback();
-            $response["errors"] = ["Recipe is not updated".$e];
+            $response["errors"] = ["message"=>"Recipe is not updated".$e];
             $response["code"] = 400;
         }
     }
@@ -186,11 +169,11 @@ class RecipeController extends Controller
             $recipe = Recipe::find($id)
             ->delete($id);
             DB::commit();
-            $response["last_id_deleted"]=$id;
+            $response["last_deleted_id"]=$id;
             $response["code"]=200;
         }catch(\Excemption $e){
             DB::rollback();
-            $response["error"]=["Failed to Delete".$e];
+            $response["error"]=["message"=>"Failed to Delete".$e];
             $response["code"]=400;
         }
         return response($response,$response["code"]);
