@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\ReplyController;
 
 
 /*
@@ -48,3 +49,10 @@ Route::apiResource('/recipes', RecipeController::class);
 Route::post('/test',[RecipeController::class,"testData"]);
 Route::get('/search/{id}',[RecipeController::class,"searchById"]);
 Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
+Route::get('/search/{category}/cat',[RecipeController::class,"searchbyCategory"]);
+
+
+
+//reply routes
+
+Route::apiResource('/replies',ReplyController::class);

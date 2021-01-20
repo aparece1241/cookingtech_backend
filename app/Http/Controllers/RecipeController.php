@@ -198,7 +198,8 @@ class RecipeController extends Controller
     {
         $response = [];
         try {
-            $recipe = Recipe::findOrFail($id);
+            $recipe = Recipe::where('id',$id)
+                ->with('comments','comments.replies')->get();
             $response["recipe"] = $recipe;
             $response["code"] = 200;
         } catch (\Exception $e) {
