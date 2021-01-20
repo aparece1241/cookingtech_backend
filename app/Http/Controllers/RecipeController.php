@@ -177,11 +177,6 @@ class RecipeController extends Controller
             $response["code"]=400;
         }
         return response($response,$response["code"]);
-
-        // $recipe = Recipe::find($id);
-        // $recipe->delete();
-
-        // return response()->json($recipe);
     }
 
     public function searchById($id)
