@@ -19,7 +19,7 @@ class Comment extends Model
 
 
     //relationship: a comment can have many replies
-    public function FunctionName(Type $var = null)
+    public function replies()
     {
         return $this->hasMany(Reply::class);
     }

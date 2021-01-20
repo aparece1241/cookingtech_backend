@@ -4,38 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * return a listing of the Comments.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $response=[];
+        try {
+            $comments = Comment::all();
+            $response["comments"] = $comments;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["errors"] = ["message"=> "Unable to get users $e"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created Comment in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        //validation here
+        $validation = Validator::make($request->all(),[
+            'content' =>'required',
+            'user_id' => 'required',
+            'recipe_id' => 'required'
+        ]);
+        
+        $response=[];
+        
+        if($validation->fails()){
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        }else {
+            DB::beginTransaction();
+            try{
+                //save
+                $comment = Comment::create($request->all());
+
+                DB::commit();
+                $response["last_inserted_id"] = $comment->id;
+                $response["code"] = 200;
+            }catch(\Exception $e) {
+                DB::rollBack();
+                $response["errors"] = ["message" => "Unable to retrieve save comment! $e"];
+                $response["code"] = 400;
+            }
+            
+            return response($response, $response["code"]);
+        }
+
+
     }
 
     /**

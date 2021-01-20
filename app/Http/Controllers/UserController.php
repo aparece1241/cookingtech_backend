@@ -52,6 +52,26 @@ class UserController extends Controller
         return response($response, 201);
     }
 
+
+    /**
+     * Log out the current authenticated user
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        try{
+            dd($request->user());
+            $request->user()->currentAccessToken()->delete();
+            return response("Successfully logout!");
+        }catch(\Exception $e) {
+            return response("Something went wrong!");
+        }
+    }
+
+
     /**
      * The store function will act as the register user.
      *
@@ -105,7 +125,7 @@ class UserController extends Controller
     {
         $response =[];
         try {
-            $user = User::find($id);
+            $user = User::findOrFail($id);
             $response["code"] = 200;
             $response["user"] = $user;
 
@@ -223,7 +243,7 @@ class UserController extends Controller
      {
         $response=[];
         try {
-            $user = User::findOrFail($id)->latest()->with('recipes')->get();
+            $user = User::where('id', $id)->with('recipes','recipes.comments')->get();
             $response["user"] = $user;
             $response["code"] = 200;
         }catch(\Exception $e) {
