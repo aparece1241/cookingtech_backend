@@ -67,10 +67,10 @@ class BookmarkController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Library  $library
+     * @param  \App\Models\Bookmark  $Bookmark
      * @return \Illuminate\Http\Response
      */
-    public function show(Library $library)
+    public function show(Bookmark $Bookmark)
     {
         //
     }
@@ -78,10 +78,10 @@ class BookmarkController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Library  $library
+     * @param  \App\Models\Bookmark  $Bookmark
      * @return \Illuminate\Http\Response
      */
-    public function edit(Library $library)
+    public function edit(Bookmark $Bookmark)
     {
         //
     }
@@ -90,10 +90,10 @@ class BookmarkController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Library  $library
+     * @param  \App\Models\Bookmark  $Bookmark
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Library $library)
+    public function update(Request $request, Bookmark $Bookmark)
     {
         //
     }
@@ -101,11 +101,24 @@ class BookmarkController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Library  $library
+     * @param  \App\Models\Bookmark  $Bookmark
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Library $library)
+    public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        $response=[];
+        try {
+            $bookmark = Bookmark::findOrFali($id)->delete();
+            DB::commit();
+            $response["last_deleted_id"] = $id;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            DB::rollBack();
+            $response["errors"] = ["message"=> "Unable to delete this bookmark $e"];
+            $response["code"] = 400;
+        }
+        
+        return response($response, $response["code"]);
     }
 }

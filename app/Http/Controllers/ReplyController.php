@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Reply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ReplyController extends Controller
 {
@@ -15,6 +17,7 @@ class ReplyController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -36,6 +39,33 @@ class ReplyController extends Controller
     public function store(Request $request)
     {
         //
+        $validation = Validator::make($request->all(),[
+            'content'=>'required',
+            'user_id'=>'required',
+            'comment_id'=>'required'
+        ]);
+
+        $response=[];
+        if($validation->fails()){
+            $response["errors"]=$validation->errors();
+            $response["code"]=400;
+        }else{
+            DB::beginTransaction();
+            try{
+                $reply=Reply::create($request->all());
+                DB::commit();
+                $response["last_inserted_id"]=$reply->id;
+                $response["code"]=200;
+            }catch(\Exception $e){
+                DB::rollback();
+                $response["errors"]=["message"=>"Unable to add reply".$e];
+                $response["code"]=400;
+            }
+            
+        }
+
+    return response($response,$response["code"]);
+        
     }
 
     /**
@@ -81,5 +111,6 @@ class ReplyController extends Controller
     public function destroy(Reply $reply)
     {
         //
+        
     }
 }
