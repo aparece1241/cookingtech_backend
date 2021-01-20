@@ -18,7 +18,7 @@ class BookmarkController extends Controller
     {
         $response=[];
         try {
-            $bookmarks = Bookmark::with('recipe')->get();
+            $bookmarks = Bookmark::with('recipe','user')->get();
             $response["bookmarks"] = $bookmarks;
             $response["code"] = 200;
         }catch(\Exception $e) {
