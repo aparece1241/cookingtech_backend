@@ -77,7 +77,7 @@ class RecipeController extends Controller
                 $response["code"] = 200;
             } catch (\Exception $e) {
                 DB::rollback();
-                $response["errors"] = ["Recipe is not created" . $e];
+                $response["errors"] = ["message" => "Recipe is not created" . $e];
                 $response["code"] = 400;
             }
         }
@@ -90,7 +90,6 @@ class RecipeController extends Controller
      * @param  \App\Models\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-   
 
     /**
      * Show the form for editing the specified resource.
@@ -236,7 +235,7 @@ class RecipeController extends Controller
             $recipe = Recipe::where("category", $category)
                 ->get();
             if (count($recipe) < 1) {
-                throw  new \Exception();
+                throw new \Exception();
             }
             $response["category"] = $recipe;
             $response["code"] = 200;
@@ -245,19 +244,6 @@ class RecipeController extends Controller
             $response["code"] = 400;
         }
         return response($response, $response["code"]);
-    }
-
-    //testing
-    public function testData(Request $request)
-    {
-        $rules = array(
-            "name" => "required",
-        );
-
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return $validator->errors();
-        }
     }
 
 }

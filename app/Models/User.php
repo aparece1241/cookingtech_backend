@@ -54,7 +54,7 @@ class User extends Authenticatable
         return $this->hasMany(Recipe::class);
     }
 
-    
+
     //relationship: user has one library
     public function library(Type $var = null)
     {

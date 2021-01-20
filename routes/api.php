@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -22,43 +23,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::group(['middleware'=>'auth:sanctum'], function() {
+    Route::get('/logout', [UserController::class, 'logout']);
 });
 
+
+//user routes
 Route::post('login', [UserController::class, 'login']);
+Route::apiResource('/users', UserController::class);
+Route::get('users/recipe/{id}', [UserController::class, 'getUserByIdAnd']);
 
-
-
-
+//recipe routes
 Route::apiResource('/recipes', RecipeController::class);
 
-Route::apiResource('/users', UserController::class);
+//Comment routes
+Route::apiResource('/comments', CommentController::class);
 
 Route::post('/test',[RecipeController::class,"testData"]);
 Route::get('/search/{id}',[RecipeController::class,"searchById"]);
-Route::get('/search/{category}/cat',[RecipeController::class,"searchbyCategory"]);
 Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);
-
-//index => localhost:port/recipes
-//store => localhost:port/recipes
-//destroy => localhost:port/recipes/{id}
-//update => localhost:port/recipes/{id}
-
-
-/**
- * DB::beginTransaction();
-
-try {
-    DB::insert(...);
-    DB::insert(...);
-    DB::insert(...);
-
-    DB::commit();
-    // all good
-} catch (\Exception $e) {
-    DB::rollback();
-    // something went wrong
-}
- */
-
