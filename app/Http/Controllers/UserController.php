@@ -68,7 +68,7 @@ class UserController extends Controller
                 $response["message"] = "Successfully logout!";
                 $response["code"] = 200;
         }catch(\Exception $e) {
-            $response["message"] = "Womething went wrong!";
+            $response["message"] = "Something went wrong!";
             $response["code"] = 400;
         }
 
@@ -223,7 +223,7 @@ class UserController extends Controller
     {
         $response=[];
         try {
-            $users = User::where('usertype', $userType);
+            $users = User::where('usertype', $userType)->get();
             $response["code"] = 200;
             $response["users"] = $users;
         }catch(\Exception $e){
@@ -234,6 +234,27 @@ class UserController extends Controller
         return response($response, $response["code"]);
     }
 
+    /**
+     * Get user and its bookmarked recipe
+     * 
+     * @param int id
+     * 
+     * @return Illuminate\Http\Response
+     */
+
+     public function getBookmarks($id)
+     {
+            $response=[];
+            try{
+                $userBookmarks = User::where("id", $id)->latest()->with('bookmarks','bookmarks.user','bookmarks.recipe')->get();
+                $response["user_bookmarks"] = $userBookmarks;
+                $response["code"] = 200;
+            }catch(\Exception $e){
+                $response["errors"] =["message"=> "Unable to retrieve user bookmarks"];
+                $response["code"] = 400;
+            }
+            return response($response, $response["code"]);
+    }
 
     /**
      * Get user and and the recipes he/she created
@@ -257,5 +278,5 @@ class UserController extends Controller
 
         return response($response, $response["code"]);
      }
-
+     
 }
