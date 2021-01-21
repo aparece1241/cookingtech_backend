@@ -23,7 +23,7 @@ use App\Http\Controllers\ReplyController;
 */
 
 //routes that doesn't need authenticated user
-Route::post('/users/login', [UserController::class, 'login'])->name('login');
+Route::post('/users/login', [UserController::class, 'login']);
 Route::get('/recipes/{id}', [RecipeController::class, 'searchById']);
 Route::get('/recipes', [RecipeController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
