@@ -6,7 +6,7 @@ Content-Type: application/json
     "email": "aparece@gmail.com",
     "password": "password"
 }
-###
+### 
 
 POST https://cookingtech.herokuapp.com/api/recipes
 Content-Type: application/json
@@ -25,5 +25,8 @@ Content-Type: application/json
 
 ####
 
-GET https://cookingtech.herokuapp.com/api/recipes
+GET https://cookingtech.herokuapp.com/api/users
 
+
+#####
+GET http://localhost:8000/api/users

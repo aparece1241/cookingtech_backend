@@ -23,9 +23,10 @@ use App\Http\Controllers\ReplyController;
 */
 
 //routes that doesn't need authenticated user
-Route::post('/users/login', [UserController::class, 'login']);
+Route::post('/users/login', [UserController::class, 'login'])->name('login');
 Route::get('/recipes/{id}', [RecipeController::class, 'searchById']);
 Route::get('/recipes', [RecipeController::class, 'index']);
+Route::post('/users', [UserController::class, 'store']);
 
 
 //routes for the outhenticated user
@@ -48,7 +49,8 @@ Route::group(['middleware'=>['auth:sanctum','is_master']], function() {
 
 //routes for admin users
 Route::group(['middleware'=>['auth:sanctum','is_admin']], function () {
-
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::get('/users', [UserController::class, 'index']);
 });
 
 

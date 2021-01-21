@@ -16,6 +16,21 @@ class isChefMaster
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+
+        $response=[];
+        $response["message"] = "Unauthorized!";
+        $response["code"] = 401;
+
+        if($request->user()) {
+            if($request->user()["usertype"] == "chef_master" || 
+                $request->user()["usertype"]=="admin") {
+                    return $next($request);
+            }
+
+            $response["message"] = "Forbbiden!";
+            $response["code"] = 403;
+         }
+
+         return response($response, $response["code"]);
     }
 }
