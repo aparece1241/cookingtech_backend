@@ -27,6 +27,7 @@ Route::post('/users/login', [UserController::class, 'login']);
 Route::get('/recipes/{id}', [RecipeController::class, 'searchById']);
 Route::get('/recipes', [RecipeController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
+Route::get('/users/{id}', [UserController::class, 'show']);
 
 
 //routes for the outhenticated user
