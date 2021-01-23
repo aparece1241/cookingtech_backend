@@ -22,7 +22,8 @@ class Recipe extends Model
         "yield",
         "video_url",
         "img_url",
-        "user_id"
+        "user_id",
+        "status"
     ];
 
     protected $casts=[
