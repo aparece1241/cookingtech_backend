@@ -73,7 +73,7 @@ class RecipeController extends Controller
                 //save
                 $data = $request->all();
                 $data["status"] = false;
-                $recipe = Recipe::create($request->all());
+                $recipe = Recipe::create($data);
                 DB::commit();
                 $response["last_inserted_id"] = $recipe->id;
                 $response["code"] = 200;
