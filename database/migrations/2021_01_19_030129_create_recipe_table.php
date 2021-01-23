@@ -22,7 +22,7 @@ class CreateRecipeTable extends Migration
             $table->json('tag');
             $table->enum('category',['desert','soup','breakfast']);
             $table->integer('yield');
-            $table->string('video_url');
+            $table->string('video_url')->nullable();
             $table->string('img_url');
             $table->boolean('status');
             $table->unsignedBigInteger('user_id');
