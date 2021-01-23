@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('username');
-            $table->string('profile_pic');
+            $table->string('profile_pic')->default('default.png');
             $table->enum('usertype',['admin','chef_apprentice','chef_master']);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -53,23 +53,3 @@ Route::group(['middleware'=>['auth:sanctum','is_admin']], function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index']);
 });
-
-
-
-//user routes
-// Route::get('/users/bookmarks/{id}', [UserController::class, 'getBookmarks']);
-// Route::apiResource('/users', UserController::class);
-// Route::get('users/recipe/{id}', [UserController::class, 'getUserByIdAnd']);
-
-
-// //Comment routes
-// Route::apiResource('/comments', CommentController::class);
-
-// //bookmark routes
-// Route::apiResource('/bookmarks', BookmarkController::class);
-
-// //recipe routes
-// Route::apiResource('/recipes', RecipeController::class);
-// Route::post('/test',[RecipeController::class,"testData"]);
-// Route::get('/search/{id}',[RecipeController::class,"searchById"]);
-// Route::get('/search/{tag}/tag',[RecipeController::class,"searchbyTag"]);

@@ -28,7 +28,7 @@ class CreateRecipeTable extends Migration
             $table->unsignedBigInteger('user_id');
 
             //foriegn key user
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

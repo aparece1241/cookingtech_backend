@@ -29,4 +29,14 @@ GET https://cookingtech.herokuapp.com/api/users
 
 
 #####
-GET http://localhost:8000/api/users
+
+POST  http://localhost:8000/api/users
+Content-Type: application/json
+{
+    "firstname": "admin",
+    "lastname": "admin",
+    "username": "admin",
+    "email": "admin@email.com",
+    "password": "password",
+    "usertype": "admin"
+}

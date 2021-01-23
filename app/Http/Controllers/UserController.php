@@ -117,7 +117,6 @@ class UserController extends Controller
         }
         return response($response, $response["code"]);
     }
-
     /**
      * get the specified resource.
      *
@@ -139,8 +138,6 @@ class UserController extends Controller
 
         return response($response, $response["code"]);
     }
-
-
 
     /**
      * Update the specified resource in storage.
