@@ -52,7 +52,6 @@ class RecipeController extends Controller
             'tag' => 'required',
             'category' => 'required',
             'yield' => 'required',
-            'video_url' => 'required',
             'img_url' => 'required',
             'ingredients' => 'required',
             'procedures' => 'required',
