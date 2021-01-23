@@ -71,9 +71,11 @@ class RecipeController extends Controller
             DB::beginTransaction();
             try {
                 //save
+                $data = $request->all();
+                $data["status"] = false;
                 $recipe = Recipe::create($request->all());
                 DB::commit();
-                $response["last inserted id"] = $recipe->id;
+                $response["last_inserted_id"] = $recipe->id;
                 $response["code"] = 200;
             } catch (\Exception $e) {
                 DB::rollback();
@@ -135,6 +137,7 @@ class RecipeController extends Controller
             try {
                 $recipe = Recipe::where("id", $id)
                     ->update($request->all());
+                    
                 DB::commit();
                 $response["last_updated_id"] = $id;
                 $response["code"] = 200;

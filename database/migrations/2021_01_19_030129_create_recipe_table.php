@@ -24,6 +24,7 @@ class CreateRecipeTable extends Migration
             $table->integer('yield');
             $table->string('video_url');
             $table->string('img_url');
+            $table->boolean('status');
             $table->unsignedBigInteger('user_id');
 
             //foriegn key user

@@ -38,6 +38,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+
         //validation here
         $validation = Validator::make($request->all(),[
             'content' =>'required',
@@ -64,10 +65,8 @@ class CommentController extends Controller
                 $response["errors"] = ["message" => "Unable to retrieve save comment! $e"];
                 $response["code"] = 400;
             }
-            
-            return response($response, $response["code"]);
         }
-
+        return response($response, $response["code"]);
 
     }
 
@@ -111,8 +110,21 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        //
+        $response=[];
+        DB::beginTransaction();
+        try{
+            $comment = Comment::findOrFail($id)->delete();
+            DB::commit();
+            $response["last_deleted_id"] = $id;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            DB::rollBack();
+            $response["errors"] = ["message"=> "Unable to delete comment $e"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
     }
 }
