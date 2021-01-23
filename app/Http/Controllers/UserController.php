@@ -93,7 +93,7 @@ class UserController extends Controller
             'usertype' => 'required'
         ]);
         $response = [];
-
+        
         //check the validation if there are errors
         if ($validation->fails()) {
             $response["errors"] = $validation->errors();
@@ -274,5 +274,4 @@ class UserController extends Controller
 
         return response($response, $response["code"]);
      }
-     
 }
