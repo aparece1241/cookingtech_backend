@@ -62,39 +62,6 @@ class RecipeController extends Controller
 
     }
 
-
-    /**
-     * upload image
-     */
-    public function imageUpload(Request $request)
-    {
-        $response = [];
-        if ($request->hasFile('image')) {
-            if ($request->file('image')->isValid()) {
-                $validation = Validator::make($request->all(), [
-                    'image' => 'mimes:jpeg,png'
-                ]);
-
-                if ($validation->fails()) {
-                    return "error in the validation part";
-                } else {
-                    $extention = $request->file('image')->getClientOriginalExtension();
-                    $timestamp = time();
-                    $request->image->storeAs('/public', $timestamp . "." . $extention);
-                    $url = Storage::url($timestamp . "." . $extention);
-
-                    return ["url" => $url];
-                }
-            } else {
-                return ["error1"];
-            }
-        } else {
-            return ["error"];
-        }
-    }
-
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -104,7 +71,6 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
 
-        return $this->imageUpload($request);
         //validation
         $validation = Validator::make($request->all(), [
             'name' => 'required|max:255',

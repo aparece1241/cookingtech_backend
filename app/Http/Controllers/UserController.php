@@ -90,7 +90,6 @@ class UserController extends Controller
             'lastname' => 'required',
             'password' => 'required',
             'email' => 'required|email|unique:users',
-            'usertype' => 'required'
         ]);
         $response = [];
         
@@ -104,6 +103,7 @@ class UserController extends Controller
                 //save
                 $data = $request->all();
                 $data["password"] = Hash::make($data["password"]);
+                $data["usertype"] = "chef_apprentice";
                 $user = User::create($data);
 
                 $response["last_inserted_id"] = $user->id;
@@ -150,12 +150,12 @@ class UserController extends Controller
     {
          //validation here
         $validation = Validator::make($request->all(), [
-            'username' => 'required|max:255',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'password' => 'required',
-            'email' => 'required|email',
-            'usertype' => 'required'
+            'username' => 'max:255',
+            'firstname' => '',
+            'lastname' => '',
+            'password' => '',
+            'email' => 'email',
+            'usertype' => ''
         ]);
         $response = [];
 
