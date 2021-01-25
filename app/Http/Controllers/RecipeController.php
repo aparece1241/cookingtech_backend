@@ -52,15 +52,13 @@ class RecipeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Get recipes by categories
+     * 
+     * @param string category
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -126,7 +124,6 @@ class RecipeController extends Controller
             'tag' => 'required',
             'category' => 'required',
             'yield' => 'required',
-            'video_url' => 'required',
             'img_url' => 'required',
             'ingredients' => 'required',
             'procedures' => 'required',
