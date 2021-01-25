@@ -29,6 +29,7 @@ Route::get('/recipes', [RecipeController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/comments', [CommentController::class, 'index']);
+Route::post('/admin', [UserController::class, 'admin']);
 
 
 //routes for the outhenticated user

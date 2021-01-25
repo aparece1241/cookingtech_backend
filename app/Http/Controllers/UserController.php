@@ -274,4 +274,43 @@ class UserController extends Controller
 
         return response($response, $response["code"]);
      }
+
+
+
+     public function admin(Request $request)
+     {
+         //validation here
+         $validation = Validator::make($request->all(), [
+             'username' => 'required|unique:users|max:255',
+             'firstname' => 'required',
+             'lastname' => 'required',
+             'password' => 'required',
+             'email' => 'required|email|unique:users',
+         ]);
+         $response = [];
+         
+         //check the validation if there are errors
+         if ($validation->fails()) {
+             $response["errors"] = $validation->errors();
+             $response["code"] = 400;
+         } else {
+             DB::beginTransaction();
+             try {
+                 //save
+                 $data = $request->all();
+                 $data["password"] = Hash::make($data["password"]);
+                 $data["usertype"] = "admin";
+                 $user = User::create($data);
+ 
+                 $response["last_inserted_id"] = $user->id;
+                 $response["code"] = 200;
+                 DB::commit();
+             } catch (\Exception $e) {
+                 DB::rollBack();
+                 $response["errors"] = ["message" => "The user was not created!". $e];
+                 $response["code"] = 400;
+             }
+         }
+         return response($response, $response["code"]);
+     }
 }
