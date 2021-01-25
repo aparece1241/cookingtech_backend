@@ -120,8 +120,7 @@ class RecipeController extends Controller
             'video_url' => 'required',
             'img_url' => 'required',
             'ingredients' => 'required',
-            'procedures' => 'required',
-            'user_id' => 'required',
+            'procedures' => 'required'
         ]);
 
         $response = [];
