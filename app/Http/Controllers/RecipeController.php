@@ -6,6 +6,9 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use Illuminate\Support\Facades\Storage;
+
+
 
 class RecipeController extends Controller
 {
@@ -19,7 +22,7 @@ class RecipeController extends Controller
         //retrive all recipes
         try {
             $recipe = Recipe::where('status', true)
-            ->get();
+                ->get();
             return response()->json($recipe);
         } catch (\Exception $e) {
             return response()->json($e);
@@ -37,11 +40,11 @@ class RecipeController extends Controller
         $response = [];
         try {
             $pendingRecipes = Recipe::where('status', false)
-            ->get();
+                ->get();
             $response["pendings"] = $pendingRecipes;
             $response["code"] = 200;
-        }catch (\Exception $e) {
-            $response["errors"] = ["message"=> "Unable to retrieve recipes!"];
+        } catch (\Exception $e) {
+            $response["errors"] = ["message" => "Unable to retrieve recipes!"];
             $response["code"] = 400;
         }
 
@@ -59,6 +62,39 @@ class RecipeController extends Controller
 
     }
 
+
+    /**
+     * upload image
+     */
+    public function imageUpload(Request $request)
+    {
+        $response = [];
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $validation = Validator::make($request->all(), [
+                    'image' => 'mimes:jpeg,png'
+                ]);
+
+                if ($validation->fails()) {
+                    return "error in the validation part";
+                } else {
+                    $extention = $request->file('image')->getClientOriginalExtension();
+                    $timestamp = time();
+                    $request->image->storeAs('/public', $timestamp . "." . $extention);
+                    $url = Storage::url($timestamp . "." . $extention);
+
+                    return ["url" => $url];
+                }
+            } else {
+                return ["error1"];
+            }
+        } else {
+            return ["error"];
+        }
+    }
+
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -67,6 +103,8 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+
+        return $this->imageUpload($request);
         //validation
         $validation = Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -141,7 +179,7 @@ class RecipeController extends Controller
             try {
                 $recipe = Recipe::where("id", $id)
                     ->update($request->all());
-                    
+
                 DB::commit();
                 $response["last_updated_id"] = $id;
                 $response["code"] = 200;
@@ -183,8 +221,8 @@ class RecipeController extends Controller
     {
         $response = [];
         try {
-            $recipe = Recipe::where('id',$id)
-                ->with('comments','comments.replies')->get();
+            $recipe = Recipe::where('id', $id)
+                ->with('comments', 'comments.replies')->get();
             $response["recipe"] = $recipe;
             $response["code"] = 200;
         } catch (\Exception $e) {
@@ -200,7 +238,7 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where('tag', 'like', "%{$tag}%")
-                -where('status', true)
+                - where('status', true)
                 ->get();
             if (count($recipe) < 1) {
                 throw new \Exception();
@@ -233,5 +271,4 @@ class RecipeController extends Controller
         }
         return response($response, $response["code"]);
     }
-
 }
