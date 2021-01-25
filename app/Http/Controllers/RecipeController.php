@@ -113,11 +113,12 @@ class RecipeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Recipe  $recipe
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
+        return  response()->json($request->all());
         $validation = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
@@ -127,7 +128,6 @@ class RecipeController extends Controller
             'img_url' => 'required',
             'ingredients' => 'required',
             'procedures' => 'required',
-            'user_id' => 'required',
         ]);
 
         $response = [];

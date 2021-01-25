@@ -30,7 +30,7 @@ GET https://cookingtech.herokuapp.com/api/users
 
 #####
 
-POST  http://cookingtech.herokuapp.com/api/users
+POST  http://localhost:8000/api/users
 Content-Type: application/json
 
 {
@@ -44,31 +44,31 @@ Content-Type: application/json
 
 ####
 
-POST http://cookingtech.herokuapp.com/api/users/login
+POST http://localhost:8000/api/users/login
 Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "master@email.com",
+    "email": "dumaguit@email.com",
     "password": "password"
 }
 
 ###
-POST http://cookingtech.herokuapp.com/api/recipes
+PUT http://localhost:8000/api/recipes/1
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 4|UgvdD5CwX9E0m7Bd7aKKrpGShpf8i2pWuff6sGJ6
+Authorization: Bearer 1|8IGZB1TUjllTBDAPJ7FGLwgT7qZuU1WQPzlDh21h
+
 
 {
-    "name": "Test2",
-    "description": "Tesat2",
+    "name": "Test1",
+    "description": "Tesat",
     "tag": "this a tag",
     "category": "desert",
     "yield": 4,
     "img_url": "fgsdgsdgsdgsd",
     "ingredients": ["tes","fsdf"],
     "procedures": ["tes","fsdf"],
-    "user_id": 3
 }
 
 ###

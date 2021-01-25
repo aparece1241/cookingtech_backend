@@ -25,10 +25,8 @@ class CreateRecipeTable extends Migration
             $table->string('video_url')->nullable();
             $table->string('img_url');
             $table->boolean('status');
-            $table->unsignedBigInteger('user_id');
-
             //foriegn key user
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

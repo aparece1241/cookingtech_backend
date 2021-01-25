@@ -16,12 +16,9 @@ class CreateReplyTable extends Migration
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('comment_id');
-
             //foriegn key
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('comment_id')->constrained('comments')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });
