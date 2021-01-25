@@ -36,13 +36,16 @@ class RecipeController extends Controller
     {
         $response = [];
         try {
-            $pendingRecipes = Recipe::where('status', false)->get();
+            $pendingRecipes = Recipe::where('status', false)
+            ->get();
             $response["pendings"] = $pendingRecipes;
             $response["code"] = 200;
         }catch (\Exception $e) {
             $response["errors"] = ["message"=> "Unable to retrieve recipes!"];
             $response["code"] = 400;
         }
+
+        return response($response, $response["code"]);
     }
 
     /**
