@@ -53,5 +53,5 @@ Route::group(['middleware'=>['auth:sanctum','is_master']], function() {
 Route::group(['middleware'=>['auth:sanctum','is_admin']], function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index']);
-    Route::get('/recipes/pendings', [RecipeController::class, 'getPendings']);
+    Route::get('/recipes/status/pendings', [RecipeController::class, 'getPendings']);
 });

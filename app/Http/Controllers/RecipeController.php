@@ -18,7 +18,8 @@ class RecipeController extends Controller
     {
         //retrive all recipes
         try {
-            $recipe = Recipe::where('status', true);
+            $recipe = Recipe::where('status', true)
+            ->get();
             return response()->json($recipe);
         } catch (\Exception $e) {
             return response()->json($e);
@@ -35,7 +36,7 @@ class RecipeController extends Controller
     {
         $response = [];
         try {
-            $pendingRecipes = Recipe::where('status', false);
+            $pendingRecipes = Recipe::where('status', false)->get();
             $response["pendings"] = $pendingRecipes;
             $response["code"] = 200;
         }catch (\Exception $e) {
