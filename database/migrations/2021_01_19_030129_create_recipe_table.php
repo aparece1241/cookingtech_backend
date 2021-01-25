@@ -19,14 +19,14 @@ class CreateRecipeTable extends Migration
             $table->text('description');
             $table->json('ingredients');
             $table->json('procedures');
-            $table->json('tag');
+            $table->string('tag');
             $table->enum('category',['desert','soup','breakfast']);
             $table->integer('yield');
             $table->string('video_url')->nullable();
             $table->string('img_url');
             $table->boolean('status');
-            //foriegn key user
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('user_id');
+
             $table->timestamps();
         });
     }
@@ -39,7 +39,6 @@ class CreateRecipeTable extends Migration
     public function down()
     {
         Schema::dropIfExists('recipes', function (Blueprint $table) {
-            $table->dropForeign('user_id');
         });
     }
 }

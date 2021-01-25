@@ -16,9 +16,11 @@ class CreateRatingTable extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->integer('stars');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('recipe_id');
             //foreign key
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });
@@ -33,8 +35,8 @@ class CreateRatingTable extends Migration
     {
 
         Schema::dropIfExists('ratings', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('recipe_id');
+            // $table->dropForeign('user_id');
+            // $table->dropForeign('recipe_id');
         });
     }
 }

@@ -16,10 +16,10 @@ class CreateCommentTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            //foriegn key
-            
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('recipe_id');            
+            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -32,8 +32,8 @@ class CreateCommentTable extends Migration
     public function down()
     {
         Schema::dropIfExists('comments', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('recipe_id');
+            // $table->dropForeign('user_id');
+            // $table->dropForeign('recipe_id');
         });
     }
 }

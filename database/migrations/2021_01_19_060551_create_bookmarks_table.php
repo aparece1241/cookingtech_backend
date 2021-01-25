@@ -15,10 +15,12 @@ class CreateBookmarksTable extends Migration
     {
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('recipe_id');
             $table->timestamps();
             //foreign key
-            $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -30,7 +32,7 @@ class CreateBookmarksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bookmarks', function(Blueprint $table) {
-            $table->dropForeign('user_id');
+            // $table->dropForeign('user_id');
         });
     }
 }

@@ -118,16 +118,15 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return  response()->json($request->all());
         $validation = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'description' => 'required|max:255',
-            'tag' => 'required',
-            'category' => 'required',
-            'yield' => 'required',
-            'img_url' => 'required',
-            'ingredients' => 'required',
-            'procedures' => 'required',
+            'name' => 'max:255',
+            'description' => 'max:255',
+            'tag' => '',
+            'category' => '',
+            'yield' => '',
+            'img_url' => '',
+            'ingredients' => '',
+            'procedures' => '',
         ]);
 
         $response = [];

@@ -16,9 +16,11 @@ class CreateReplyTable extends Migration
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->text('content');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('comment_id');
             //foriegn key
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('comment_id')->constrained('comments')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId('comment_id')->constrained('comments')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });
@@ -32,8 +34,8 @@ class CreateReplyTable extends Migration
     public function down()
     {
         Schema::dropIfExists('replies', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('comment_id');
+            // $table->dropForeign('user_id');
+            // $table->dropForeign('comment_id');
         });
     }
 }
