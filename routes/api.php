@@ -34,7 +34,7 @@ Route::post('/admin', [UserController::class, 'admin']);
 
 //routes for the outhenticated user
 Route::group(['middleware'=>'auth:sanctum'], function() {
-    Route::get('/users/logout', [UserController::class, 'logout']);
+    Route::post('/users/logout', [UserController::class, 'logoutUser']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::post('/ratings', [RatingController::class, 'store']);
     Route::post('/replies', [ReplyController::class,'store']);

@@ -59,7 +59,7 @@ class UserController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function logoutUser(Request $request)
     {
         $response=[];
         try{
