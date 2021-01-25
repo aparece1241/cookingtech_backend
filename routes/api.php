@@ -28,6 +28,7 @@ Route::get('/recipes/{id}', [RecipeController::class, 'searchById']);
 Route::get('/recipes', [RecipeController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
+Route::get('/comments', [CommentController::class, 'index']);
 
 
 //routes for the outhenticated user
@@ -52,4 +53,5 @@ Route::group(['middleware'=>['auth:sanctum','is_master']], function() {
 Route::group(['middleware'=>['auth:sanctum','is_admin']], function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/recipes/pendings', [RecipeController::class, 'getPendings']);
 });

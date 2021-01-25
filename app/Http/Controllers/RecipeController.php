@@ -18,12 +18,30 @@ class RecipeController extends Controller
     {
         //retrive all recipes
         try {
-            $recipe = Recipe::all();
+            $recipe = Recipe::where('status', true);
             return response()->json($recipe);
         } catch (\Exception $e) {
             return response()->json($e);
         }
 
+    }
+
+    /**
+     * Get pending recipes
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getPendings()
+    {
+        $response = [];
+        try {
+            $pendingRecipes = Recipe::where('status', false);
+            $response["pendings"] = $pendingRecipes;
+            $response["code"] = 200;
+        }catch (\Exception $e) {
+            $response["errors"] = ["message"=> "Unable to retrieve recipes!"];
+            $response["code"] = 400;
+        }
     }
 
     /**
@@ -83,23 +101,6 @@ class RecipeController extends Controller
             }
         }
         return response($response, $response["code"]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *vpp\Models\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Recipe $recipe)
-    {
-        //
     }
 
     /**
@@ -195,6 +196,7 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where('tag', 'like', "%{$tag}%")
+                -where('status', true)
                 ->get();
             if (count($recipe) < 1) {
                 throw new \Exception();
@@ -214,6 +216,7 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where("category", $category)
+                ->where('status', true)
                 ->get();
             if (count($recipe) < 1) {
                 throw new \Exception();
