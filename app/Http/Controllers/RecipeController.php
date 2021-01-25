@@ -127,7 +127,6 @@ class RecipeController extends Controller
             'img_url' => 'required',
             'ingredients' => 'required',
             'procedures' => 'required',
-            'user_id' => 'required',
         ]);
 
         $response = [];
