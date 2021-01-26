@@ -201,7 +201,9 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where('id', $id)
-                ->with('comments', 'comments.replies','user')->get();
+                ->with('comments', 'comments.replies', 'comments.replies.user', 
+                    'comments.user','user')->get();
+                    
             $response["recipe"] = $recipe;
             $response["code"] = 200;
         } catch (\Exception $e) {
