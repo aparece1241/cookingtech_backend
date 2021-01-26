@@ -65,6 +65,7 @@ class RecipeController extends Controller
         try {
             $recipes = Recipe::where('category',$category)
                 ->where('status', true)
+                ->with('user')
                 ->get();
             $response["recipes"] = $recipes;
             $response["code"] = 200;
