@@ -64,6 +64,7 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipes = Recipe::where('category',$category)
+                ->where('status', true)
                 ->get();
             $response["recipes"] = $recipes;
             $response["code"] = 200;
