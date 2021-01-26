@@ -59,7 +59,21 @@ class RecipeController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    
+    public function getByCategories($category)
+    {
+        $response = [];
+        try {
+            $recipes = Recipe::where('category',$category)
+                ->get();
+            $response["recipes"] = $recipes;
+            $response["code"] = 200;
+        }catch(\Exception $e) {
+            $response["errors"] = ["message"=> "There are same  errors"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+    }
 
     /**
      * Store a newly created resource in storage.

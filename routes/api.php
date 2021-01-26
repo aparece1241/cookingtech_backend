@@ -26,6 +26,7 @@ use App\Http\Controllers\ReplyController;
 Route::post('/users/login', [UserController::class, 'login']);
 Route::get('/recipes/{id}', [RecipeController::class, 'searchById']);
 Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes/category/{category}', [RecipeController::class, 'getByCategories']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/comments', [CommentController::class, 'index']);
