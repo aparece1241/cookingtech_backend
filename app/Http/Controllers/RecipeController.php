@@ -22,6 +22,7 @@ class RecipeController extends Controller
         //retrive all recipes
         try {
             $recipe = Recipe::where('status', true)
+                ->with('user')
                 ->get();
             return response()->json($recipe);
         } catch (\Exception $e) {
