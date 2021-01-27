@@ -37,6 +37,7 @@ Route::post('/admin', [UserController::class, 'admin']);
 Route::group(['middleware'=>'auth:sanctum'], function() {
     Route::post('/users/logout', [UserController::class, 'logoutUser']);
     Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
     Route::post('/ratings', [RatingController::class, 'store']);
     Route::post('/replies', [ReplyController::class,'store']);
     Route::post('/bookmarks', [BookmarkController::class, 'store']);
