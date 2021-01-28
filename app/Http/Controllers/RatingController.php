@@ -39,7 +39,7 @@ class RatingController extends Controller
     {
         $response = [];
         $validation = Validator::make($request->all(),[
-            "star"=> "required",
+            "stars"=> "required",
             "user_id" => "required",
             "recipe_id"=> "required"
         ]);
