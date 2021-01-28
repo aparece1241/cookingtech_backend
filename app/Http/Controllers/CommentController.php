@@ -23,7 +23,7 @@ class CommentController extends Controller
             $response["comments"] = $comments;
             $response["code"] = 200;
         }catch(\Exception $e) {
-            $response["errors"] = ["message"=> "Unable to get users $e"];
+            $response["errors"] = ["message"=> "Unable to get comments $e"];
             $response["code"] = 400;
         }
 
