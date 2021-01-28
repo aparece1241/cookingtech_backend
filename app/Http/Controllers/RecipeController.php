@@ -265,7 +265,7 @@ class RecipeController extends Controller
     public function graphData()
     {
         $response = [];
-        $data = Recipe::all()->with('ratings')
+        $data = Recipe::with('ratings')
             ->get();
         return response()->json($data);
     }
