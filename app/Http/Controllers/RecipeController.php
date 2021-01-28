@@ -63,14 +63,14 @@ class RecipeController extends Controller
     {
         $response = [];
         try {
-            $recipes = Recipe::where('category',$category)
+            $recipes = Recipe::where('category', $category)
                 ->where('status', true)
                 ->with('user')
                 ->get();
             $response["recipes"] = $recipes;
             $response["code"] = 200;
-        }catch(\Exception $e) {
-            $response["errors"] = ["message"=> "There are same  errors"];
+        } catch (\Exception $e) {
+            $response["errors"] = ["message" => "There are same  errors"];
             $response["code"] = 400;
         }
 
@@ -201,9 +201,15 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where('id', $id)
-                ->with('comments', 'comments.replies', 'comments.replies.user', 
-                    'comments.user','user','ratings')->get();
-                    
+                ->with(
+                    'comments',
+                    'comments.replies',
+                    'comments.replies.user',
+                    'comments.user',
+                    'user',
+                    'ratings'
+                )->get();
+
             $response["recipe"] = $recipe;
             $response["code"] = 200;
         } catch (\Exception $e) {
@@ -251,5 +257,22 @@ class RecipeController extends Controller
             $response["code"] = 400;
         }
         return response($response, $response["code"]);
+    }
+
+
+
+    //graph routes
+    public function graphData()
+    {
+        $response = [];
+        $data = Recipe::all()->mapToGroups(function ($recipe) {
+            return [$recipe->name => $recipe];
+        })->mapToGroup(function ($recipe) {
+            return [$recipe->name => $recipe->sum('ratings.stars')];
+        })->map(function($recipe){
+            return $recipe->first();
+        })->sortKeysDesc()->take(5);
+
+        return response()->json($data);
     }
 }

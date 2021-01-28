@@ -32,6 +32,8 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/comments', [CommentController::class, 'index']);
 Route::post('/admin', [UserController::class, 'admin']);
 
+//graph
+Route::get('/graph', [RecipeController::class, 'graphData']);
 
 //routes for the outhenticated user
 Route::group(['middleware'=>'auth:sanctum'], function() {
