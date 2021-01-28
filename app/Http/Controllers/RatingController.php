@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RatingController extends Controller
 {
@@ -35,7 +37,30 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = [];
+        $validation = Validator::make($request->all(),[
+            "star"=> "required",
+            "user_id" => "required",
+            "recipe_id"=> "required"
+        ]);
+
+        if($validation->fails()) {
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        }else {
+            DB::beginTransaction();
+            try{
+                $rating = Rating::create($request->all());
+                DB::commit();
+                $response["rating"] = $rating->id;
+                $response["code"] = 200;
+            }catch(\Exception $e) {
+                $response["errors"] =["message"=> "Unable to rate"];
+                DB::rollBack();
+                $response["code"] = 400;
+            }
+        }
+        return response($response, $response["code"]);
     }
 
     /**
