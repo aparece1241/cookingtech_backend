@@ -201,6 +201,7 @@ class RecipeController extends Controller
         $response = [];
         try {
             $recipe = Recipe::where('id', $id)
+                ->where('status', true)
                 ->with(
                     'comments',
                     'comments.replies',
