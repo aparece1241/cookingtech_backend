@@ -55,7 +55,7 @@ class RatingController extends Controller
                 $response["rating"] = $rating->id;
                 $response["code"] = 200;
             }catch(\Exception $e) {
-                $response["errors"] =["message"=> "Unable to rate"];
+                $response["errors"] =["message"=> "Unable to rate". $e];
                 DB::rollBack();
                 $response["code"] = 400;
             }
