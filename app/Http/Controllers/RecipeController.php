@@ -267,6 +267,8 @@ class RecipeController extends Controller
         $response = [];
         $data = Recipe::all()->mapToGroups(function ($recipe) {
             return [$recipe->name => $recipe];
+        })->mapToGroups(function($recipe){
+            return [$recipe[0]->name => $recipe[0]->sum('ratings.stars')];
         });
 //             ->mapToGroups(function ($recipe) {
 //             return [$recipe->name => $recipe->sum('ratings.stars')];
