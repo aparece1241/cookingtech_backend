@@ -265,14 +265,8 @@ class RecipeController extends Controller
     public function graphData()
     {
         $response = [];
-        $data = Recipe::all()->mapToGroups(function ($recipe) {
-            return [$recipe->name => $recipe];
-        })->mapToGroups(function ($recipe) {
-            return [$recipe->name => $recipe->sum('ratings.stars')];
-        })->map(function($recipe){
-            return $recipe->first();
-        })->sortKeysDesc()->take(5);
-
+        $data = Recipe::all()->with('ratings')
+            ->get();
         return response()->json($data);
     }
 }
