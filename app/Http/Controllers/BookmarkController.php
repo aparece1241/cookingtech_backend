@@ -109,7 +109,7 @@ class BookmarkController extends Controller
         DB::beginTransaction();
         $response=[];
         try {
-            $bookmark = Bookmark::findOrFali($id)->delete();
+            $bookmark = Bookmark::findOrFail($id)->delete();
             DB::commit();
             $response["last_deleted_id"] = $id;
             $response["code"] = 200;
