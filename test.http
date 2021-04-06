@@ -1,0 +1,101 @@
+###
+POST  https://cookingtech.herokuapp.com/api/login
+Content-Type: application/json
+
+{
+    "email": "aparece@gmail.com",
+    "password": "password"
+}
+### 
+
+POST https://cookingtech.herokuapp.com/api/recipes
+Content-Type: application/json
+
+{
+    "name": "Adobo",
+    "description": "lami",
+    "ingredients": "['test','test','test']",
+    "procedure": "['test','test']",
+    "tag": "[yummy]",
+    "category": "desert",
+    "yeild": 5,
+    "video_url": "fasfasfasfas",
+    "img_url": "afasfasfsafasfasf"
+}
+
+####
+
+GET https://cookingtech.herokuapp.com/api/users
+
+
+#####
+
+POST  http://localhost:8000/api/users
+Content-Type: application/json
+
+{
+    "firstname": "Kyla Jean",
+    "lastname": "Dumaguit",
+    "username": "master",
+    "email": "dumaguit@email.com",
+    "password": "password",
+    "usertype": "admin"
+}
+
+####
+
+POST http://localhost:8000/api/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "dumaguit@email.com",
+    "password": "password"
+}
+
+###
+PUT http://localhost:8000/api/recipes/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|8IGZB1TUjllTBDAPJ7FGLwgT7qZuU1WQPzlDh21h
+
+
+{
+    "name": "Test1",
+    "description": "Tesat",
+    "tag": "this a tag",
+    "category": "desert",
+    "yield": 4,
+    "img_url": "fgsdgsdgsdgsd",
+    "ingredients": ["tes","fsdf"],
+    "procedures": ["tes","fsdf"],
+}
+
+###
+POST http://localhost:8000/api/comments
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|BTucQNCNmxCalaepbbUtUET9VsuWDzvLOCNccgfK
+
+{
+    "content": "test",
+    "user_id": 1,
+    "recipe_id": 1
+}
+
+###
+
+GET http://localhost:8000/api/recipes/1
+
+###
+DELETE http://localhost:8000/api/recipes/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|BTucQNCNmxCalaepbbUtUET9VsuWDzvLOCNccgfK
+
+
+
+###
+
+POST http://cookingtech.herokuapp.com/api/users
+Content-Type: application/json

@@ -1,0 +1,273 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Recipe;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Validator;
+use Illuminate\Support\Facades\Storage;
+
+
+
+class RecipeController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //retrive all recipes
+        try {
+            $recipe = Recipe::where('status', true)
+                ->with('user')
+                ->get();
+            return response()->json($recipe);
+        } catch (\Exception $e) {
+            return response()->json($e);
+        }
+
+    }
+
+    /**
+     * Get pending recipes
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getPendings()
+    {
+        $response = [];
+        try {
+            $pendingRecipes = Recipe::where('status', false)
+                ->get();
+            $response["pendings"] = $pendingRecipes;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            $response["errors"] = ["message" => "Unable to retrieve recipes!"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+    }
+
+    /**
+     * Get recipes by categories
+     * 
+     * @param string category
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getByCategories($category)
+    {
+        $response = [];
+        try {
+            $recipes = Recipe::where('category', $category)
+                ->where('status', true)
+                ->with('user')
+                ->get();
+            $response["recipes"] = $recipes;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            $response["errors"] = ["message" => "There are same  errors"];
+            $response["code"] = 400;
+        }
+
+        return response($response, $response["code"]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        //validation
+        $validation = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
+            'tag' => 'required',
+            'category' => 'required',
+            'yield' => 'required',
+            'img_url' => 'required',
+            'ingredients' => 'required',
+            'procedures' => 'required',
+            'user_id' => 'required',
+
+        ]);
+
+        $response = [];
+
+        //check the validation if there are errors
+
+        if ($validation->fails()) {
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        } else {
+            DB::beginTransaction();
+            try {
+                //save
+                $data = $request->all();
+                $data["status"] = false;
+                $recipe = Recipe::create($data);
+                DB::commit();
+                $response["last_inserted_id"] = $recipe->id;
+                $response["code"] = 200;
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response["errors"] = ["message" => "Recipe is not created" . $e];
+                $response["code"] = 400;
+            }
+        }
+        return response($response, $response["code"]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $validation = Validator::make($request->all(), [
+            'name' => 'max:255',
+            'description' => 'max:255',
+            'tag' => '',
+            'category' => '',
+            'yield' => '',
+            'img_url' => '',
+            'ingredients' => '',
+            'procedures' => '',
+        ]);
+
+        $response = [];
+
+        //check the validation if there are errors
+
+        if ($validation->fails()) {
+            $response["errors"] = $validation->errors();
+            $response["code"] = 400;
+        } else {
+            DB::beginTransaction();
+            try {
+                $recipe = Recipe::where("id", $id)
+                    ->update($request->all());
+
+                DB::commit();
+                $response["last_updated_id"] = $id;
+                $response["code"] = 200;
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response["errors"] = ["Recipe is not updated" . $e];
+                $response["code"] = 400;
+            }
+        }
+        return response($response, $response["code"]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Recipe  $recipe
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+        $response = [];
+        DB::beginTransaction();
+        try {
+            $recipe = Recipe::find($id)
+                ->delete($id);
+            DB::commit();
+            $response["last_id_deleted"] = $id;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response["error"] = ["Failed to Delete" . $e];
+            $response["code"] = 400;
+        }
+        return response($response, $response["code"]);
+    }
+
+    public function searchById($id)
+    {
+        $response = [];
+        try {
+            $recipe = Recipe::where('id', $id)
+                ->where('status', true)
+                ->with(
+                    'comments',
+                    'comments.replies',
+                    'comments.replies.user',
+                    'comments.user',
+                    'user',
+                    'ratings'
+                )->get();
+
+            $response["recipe"] = $recipe;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            $response["errors"] = "Cannot be found";
+            $response["code"] = 400;
+        }
+        return response($response, $response["code"]);
+    }
+
+    //search by tag
+    public function searchbyTag($tag)
+    {
+        $response = [];
+        try {
+            $recipe = Recipe::where('tag', 'like', "%{$tag}%")
+                - where('status', true)
+                ->get();
+            if (count($recipe) < 1) {
+                throw new \Exception();
+            }
+            $response["tag"] = $recipe;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            $response["errors"] = "Tag doesn't match any recipe";
+            $response["code"] = 400;
+        }
+        return response($response, $response["code"]);
+    }
+
+//search by category
+    public function searchbyCategory($category)
+    {
+        $response = [];
+        try {
+            $recipe = Recipe::where("category", $category)
+                ->where('status', true)
+                ->get();
+            if (count($recipe) < 1) {
+                throw new \Exception();
+            }
+            $response["category"] = $recipe;
+            $response["code"] = 200;
+        } catch (\Exception $e) {
+            $response["error"] = "Category not available";
+            $response["code"] = 400;
+        }
+        return response($response, $response["code"]);
+    }
+
+
+
+    //graph routes
+    public function graphData()
+    {
+        $response = [];
+        $data = Recipe::with('ratings')
+            ->get();
+        return response()->json($data);
+    }
+}
